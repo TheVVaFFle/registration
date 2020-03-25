@@ -1,9 +1,10 @@
 package com.easy.registration.services;
 
+import com.easy.registration.builders.UserEntityBuilder;
 import com.easy.registration.exceptions.EmailExistsException;
 import com.easy.registration.exceptions.PasswordsDontMatchException;
+import com.easy.registration.models.EditUserDto;
 import com.easy.registration.models.UserDto;
-import com.easy.registration.models.NewUserDto;
 import com.easy.registration.models.UserEntity;
 import com.easy.registration.repositories.UserRepository;
 import com.easy.registration.utilities.UserUtility;
@@ -34,25 +35,23 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity registerUser(NewUserDto newUserDto) throws EmailExistsException {
-        if(emailExists(newUserDto.getEmail())){
-            throw new EmailExistsException("The email address '" + newUserDto.getEmail() + "' already exists.");
+    public UserEntity registerUser(UserDto userDto) throws EmailExistsException {
+        if(emailExists(userDto.getEmail())){
+            throw new EmailExistsException("The email address '" + userDto.getEmail() + "' already exists.");
         }
 
-        if(!passwordsMatch(newUserDto.getPassword(), newUserDto.getMatchingPassword())){
+        if(!passwordsMatch(userDto.getPassword(), userDto.getMatchingPassword())){
             throw new PasswordsDontMatchException("Passwords don't match.");
         }
 
-        newUserDto.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        return userRepository.save(UserUtility.mapUserEntity(newUserDto));
+        return userRepository.save(UserUtility.mapUserEntityFromRegistration(userDto));
     }
 
-    public void editUser(UserDto userDto){
-        UserEntity userEntity = UserUtility.mapUserEntity(userDto);
-        userEntity.setId(userDto.getId());
-
-        userRepository.save(userEntity);
+    public void editUser(EditUserDto editUserDto){
+        UserEntity existingUserEntity = this.getUser(editUserDto.getId());
+        userRepository.save(UserUtility.mapUserEntityFromEdit(editUserDto, existingUserEntity));
     }
 
     public void deleteUser(long id){

@@ -53,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/", true)
                 .permitAll()
             .and()
+                .logout()
+            .and()
                 .cors()
             .and()
                 .csrf()

@@ -2,7 +2,7 @@ package com.easy.registration.models;
 
 import javax.validation.constraints.NotBlank;
 
-public class UserDto {
+public class EditUserDto {
     private Long id;
 
     @NotBlank(message = "First name is required")
@@ -13,10 +13,6 @@ public class UserDto {
 
     @NotBlank(message = "Email is required")
     private String email;
-
-    @NotBlank(message = "Password is required")
-    private String password;
-    private String matchingPassword;
 
     public Long getId() {
         return id;
@@ -48,21 +44,5 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getMatchingPassword() {
-        return matchingPassword;
-    }
-
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
     }
 }

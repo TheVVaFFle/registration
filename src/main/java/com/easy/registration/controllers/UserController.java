@@ -1,6 +1,7 @@
 package com.easy.registration.controllers;
 
 import com.easy.registration.config.properties.Label;
+import com.easy.registration.models.EditUserDto;
 import com.easy.registration.models.UserDto;
 import com.easy.registration.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -44,9 +45,9 @@ public class UserController {
     }
 
     @PostMapping("/edit/{id}")
-    public String completeRegistration(
+    public String editUser(
             @ModelAttribute("user")
-            @Valid UserDto userDto,
+            @Valid EditUserDto editUserDto,
             BindingResult result,
             WebRequest request,
             Model model,
@@ -56,7 +57,7 @@ public class UserController {
             return "edit-user";
         }
 
-        this.userService.editUser(userDto);
+        this.userService.editUser(editUserDto);
 
         model.addAttribute("label", label);
         model.addAttribute("users", this.userService.getUsers());

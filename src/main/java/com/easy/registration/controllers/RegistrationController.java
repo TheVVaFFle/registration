@@ -3,7 +3,7 @@ package com.easy.registration.controllers;
 import com.easy.registration.config.properties.Label;
 import com.easy.registration.exceptions.EmailExistsException;
 import com.easy.registration.exceptions.PasswordsDontMatchException;
-import com.easy.registration.models.NewUserDto;
+import com.easy.registration.models.UserDto;
 import com.easy.registration.models.UserEntity;
 import com.easy.registration.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -38,14 +38,14 @@ public class RegistrationController {
     @GetMapping("/registration")
     public String getRegistrationPage(WebRequest request, Model model){
         model.addAttribute("label", label);
-        model.addAttribute("user", new NewUserDto());
+        model.addAttribute("user", new UserDto());
         return "registration";
     }
 
     @PostMapping("/registration")
     public String completeRegistration(
             @ModelAttribute("user")
-            @Valid NewUserDto newUserDto,
+            @Valid UserDto userDto,
             BindingResult result,
             WebRequest request,
             Model model,
@@ -55,7 +55,7 @@ public class RegistrationController {
 
         if(!result.hasErrors()){
             try{
-                userEntity = this.userService.registerUser(newUserDto);
+                userEntity = this.userService.registerUser(userDto);
             }
             catch(EmailExistsException e){
                 result.rejectValue("email", "messages.regError", "Email already exists!");
@@ -66,7 +66,7 @@ public class RegistrationController {
         }
 
         model.addAttribute("label", label);
-        model.addAttribute("user", newUserDto);
+        model.addAttribute("user", userDto);
 
         if(result.hasErrors()){
             return "registration";
