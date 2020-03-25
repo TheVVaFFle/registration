@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <h1 th:text="${'Update user ' + user.id}">Update user</h1>
+        <form
+            action="#"
+            th:action="@{/edit/{id}(id=${user.id})}"
+            th:object="${user}"
+            method="post"
+        >
+            <label for="first-name">First Name</label>
+            <input type="text" th:field="${user.firstName}" id="first-name" placeholder="First Name">
+            <p th:each="error: ${#fields.errors('firstName')}"
+               th:text="${error}">Validation error</p>
+
+            <label for="last-name">Last Name</label>
+            <input type="text" th:field="${user.lastName}" id="last-name" placeholder="Last Name">
+            <p th:each="error : ${#fields.errors('lastName')}"
+               th:text="${error}">Validation error</p>
+
+            <label for="email">Email</label>
+            <input type="text" th:field="*{email}" id="email" placeholder="Email">
+            <p th:each="error : ${#fields.errors('email')}"
+               th:text="${error}">Validation error</p>
+
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
