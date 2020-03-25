@@ -40,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new User(
             userEntity.getEmail(),
-            userEntity.getPassword().toLowerCase(),
+            userEntity.getPassword(),
             enabled,
             accountNonExpired,
             credentialsNonExpired,
